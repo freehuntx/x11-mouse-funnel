@@ -1,4 +1,5 @@
 # Maintainer: Your Name <your.email@example.com>
+# NOTE: Update the maintainer information above when publishing to AUR
 pkgname=x11-mouse-funnel
 pkgver={{VERSION}}
 pkgrel=1

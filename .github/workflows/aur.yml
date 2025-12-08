@@ -68,8 +68,6 @@ jobs:
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
           git clone ssh://aur@aur.archlinux.org/x11-mouse-funnel.git \
-            aur-repo || \
-            git clone ssh://aur@aur.archlinux.org/x11-mouse-funnel.git \
             aur-repo
 
       - name: Update AUR repository
@@ -79,6 +77,9 @@ jobs:
           cd aur-repo
           git add PKGBUILD .SRCINFO
           VERSION="${{ steps.version.outputs.version }}"
-          git commit -m "Update to version ${VERSION}" \
-            || echo "No changes to commit"
-          git push origin master
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Update to version ${VERSION}"
+            git push origin master
+          fi
