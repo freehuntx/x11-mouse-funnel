@@ -8,7 +8,7 @@ on:
 jobs:
   build:
     name: Build Linux Binary
-    runs-on: ubuntu-20.04 # Using an older LTS ensures high compatibility (including Arch)
+    runs-on: ubuntu:latest
 
     permissions:
       contents: write # Needed to create releases and upload assets
