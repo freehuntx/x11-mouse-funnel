@@ -48,13 +48,12 @@ jobs:
         run: |
           # Use Docker container with Arch Linux to generate .SRCINFO
           docker run --rm -v "$PWD:/pkg" archlinux:latest bash -c "
-            pacman -Sy --noconfirm base-devel pacman-contrib && \
+            pacman -Sy --noconfirm base-devel pacman-contrib > /dev/null 2>&1 && \
             useradd -m builder && \
-            su builder -c '
-              cd /pkg &&
-              makepkg --printsrcinfo > .SRCINFO
-            '
-          "
+            cp /pkg/PKGBUILD /home/builder/PKGBUILD && \
+            chown builder /home/builder/PKGBUILD && \
+            su builder -c 'cd /home/builder && makepkg --printsrcinfo'
+          " > .SRCINFO
           cat .SRCINFO
 
       - name: Setup SSH for AUR
