@@ -48,9 +48,12 @@ jobs:
         run: |
           # Use Docker container with Arch Linux to generate .SRCINFO
           docker run --rm -v "$PWD:/pkg" archlinux:latest bash -c "
-            cd /pkg &&
-            pacman -Sy --noconfirm pacman-contrib &&
-            makepkg --printsrcinfo > .SRCINFO
+            pacman -Sy --noconfirm base-devel pacman-contrib && \
+            useradd -m builder && \
+            su builder -c '
+              cd /pkg &&
+              makepkg --printsrcinfo > .SRCINFO
+            '
           "
           cat .SRCINFO
 
